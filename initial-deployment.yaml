@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: random-generator-blue
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: random-generator
+      version: initial
+  template:
+    metadata:
+      labels:
+        app: random-generator
+        version: initial
+    spec:
+      containers:
+      - image: k8spatterns/random-generator:1.0
+        name: random-generator
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /info
+            port: 8080
+          initialDelaySeconds: 5
